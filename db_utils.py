@@ -17,13 +17,25 @@ def load_credentials(file_path):
 class RDSDatabaseConnector:
     def __init__(self, credentials):
         self.credentials = credentials
-
+    
+    def save_data(self, df):
+        try:
+            df.to_csv(f'{directory}{table_name}.csv', index=False)
+            print('Data saved')
+        except:
+            print('Saving failed')
+    
     def connect_db(self, DATABASE_TYPE, DBAPI, RDS_USER, RDS_PASSWORD, RDS_HOST, RDS_PORT, RDS_DATABASE):
-        engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{RDS_USER}:{RDS_PASSWORD}@{RDS_HOST}:{RDS_PORT}/{RDS_DATABASE}")
-        conn = engine.connect()
+        try:
+            engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{RDS_USER}:{RDS_PASSWORD}@{RDS_HOST}:{RDS_PORT}/{RDS_DATABASE}")
+            conn = engine.connect()
+            print('Connection successful')
+        except:
+            print('Connection failed')
         df = pd.read_sql(f'SELECT * FROM {table_name}', conn)
-        print(df)
-
+        conn.close()
+        return self.save_data(df)
+        
 def load_db(credentials_file_path):
     credentials = load_credentials(credentials_file_path)
     connection = RDSDatabaseConnector(credentials)
@@ -32,5 +44,10 @@ def load_db(credentials_file_path):
 if __name__ == '__main__':
     credentials_file_path = 'C:/Users/Chris/Documents/Career development/AiCore Bootcamp/EDA-Project/credentials.yaml' # Use of forward slash instead of backslash
     table_name = 'customer_activity'
+    directory = 'C:/Users/Chris/Documents/Career development/AiCore Bootcamp/EDA-Project/'  # To save df
     load_db(credentials_file_path)
+
+
+
+
 
