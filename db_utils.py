@@ -46,7 +46,7 @@ class RDSDatabaseConnector:
         This method saves the Pandas df to .csv file in specified local directory.
 
         Parameters:
-            df: Pandas DataFrame.
+            df: Pandas DataFrame. 
         '''
         try:
             df.to_csv(f'{directory}{table_name}.csv', index=False)
