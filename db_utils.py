@@ -89,9 +89,9 @@ def load_db(credentials_file_path):
     connection.connect_db(**credentials)    # Use of the unpacking operator (**) to unpack dictionary into keyword arguments of a function. 
 
 if __name__ == '__main__':
-    credentials_file_path = 'C:/Users/Chris/Documents/Career development/AiCore Bootcamp/EDA-Project/credentials.yaml' # Use of forward slash instead of backslash
+    credentials_file_path = 'C:/Users/Chris/Documents/AiCoreEDA_Project/credentials.yaml' # Use of forward slash instead of backslash
     table_name = 'customer_activity'    # Name of table in db, also used to create file_name.
-    directory = 'C:/Users/Chris/Documents/Career development/AiCore Bootcamp/EDA-Project/'  # To save df
+    directory = 'C:/Users/Chris/Documents/AiCoreEDA_Project/EDA-Project/'  # To save df
     load_db(credentials_file_path)
 
 
