@@ -58,7 +58,7 @@ class RDSDatabaseConnector:
         '''
         This method connects to the remote RDS and creates a Pandas df of all data from specefied table name.
 
-        Parameters:
+        Parameters: 
             DATABASE_TYPE (str): dialect
             DBAPI (str): driver
             RDS_USER (str): username
