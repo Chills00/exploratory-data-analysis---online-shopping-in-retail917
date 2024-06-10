@@ -56,7 +56,7 @@ class RDSDatabaseConnector:
     
     def connect_db(self, DATABASE_TYPE, DBAPI, RDS_USER, RDS_PASSWORD, RDS_HOST, RDS_PORT, RDS_DATABASE):
         '''
-        This method connects to the remote RDS and creates a Pandas df of all data from specefied table name.
+        This method connects to the remote RDS and creates a Pandas df of all data from specefied table name. 
 
         Parameters: 
             DATABASE_TYPE (str): dialect
