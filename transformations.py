@@ -1,3 +1,5 @@
+import pandas as pd
+
 class DataTransform():
     '''
     This class is used to change the data type of specified column(s) to a new data type.
@@ -50,7 +52,7 @@ class DataTransform():
             The specified column(s) as datetime64 to the millisecond value.
         '''  
         for arg in args:
-            self.df_name[arg] = self.df_name[arg].astype('timedelta64[ms]')
+            self.df_name[arg] = pd.to_timedelta(self.df_name[arg], unit='s')
 
     def to_Int(self, *args):
         '''
