@@ -6,8 +6,8 @@ class DataTransform():
 
     ------------------
     Parameters:
-    *args: Column header(s)
-        Any number of columns
+    df_name: Pandas df
+        A Pandas dataframe
 
     ------------------
     Attributes:
@@ -33,6 +33,7 @@ class DataTransform():
         This method converts the specified column(s) to category data type.
 
         Parameters:
+            df_name (Pandas df): Pandas df
             *args (str): Column header(s)
         
         Returns:
@@ -46,6 +47,7 @@ class DataTransform():
         This method converts the specified column(s) to datetime64 data type.
 
         Parameters:
+            df_name (Pandas df): Pandas df
             *args (str): Column header(s)
         
         Returns:
@@ -59,6 +61,7 @@ class DataTransform():
         This method converts the specified column(s) to Int64 data type.
 
         Parameters:
+            df_name (Pandas df): Pandas df
             *args (str): Column header(s)
         
         Returns:
@@ -72,6 +75,7 @@ class DataTransform():
         This method converts the specified column(s) to int64 data type.
 
         Parameters:
+            df_name (Pandas df): Pandas df
             *args (str): Column header(s)
         
         Returns:
@@ -79,3 +83,121 @@ class DataTransform():
         '''    
         for arg in args:
             self.df_name[arg] = self.df_name[arg].astype('int64')
+
+class DataFrameTransform():
+    '''
+    This class is used to change the dataframe (df).
+
+    ------------------
+    Parameters:
+    df_name: Pandas df
+        A Pandas dataframe
+
+    ------------------
+    Attributes:
+    column_name: Column header
+        Column to be transformed
+    *args: Column header(s)
+        Any number of columns
+
+    ------------------
+    Methods:
+    drop_columns()
+        Drops specified columns from df.
+    drop_rows_from_columns()
+        Drops rows by searching specified columns for null-values. 
+    drop_all_nulls()
+        Drops all rows if null-value is in df.
+    impute_mean()
+        Imputes null-values in specified column with mean value.
+    impute_median()
+        Imputes null-values in specified column with median value.
+    impute_mode()
+        Imputes null-values in specified column with mode value.
+    '''
+    def __init__(self, df_name):
+        self.df_name = df_name
+    
+    def drop_columns(self, *args):  # arg is column_name
+        '''
+        This method drops specified columns from df.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            *args (str): Column header(s)
+        
+        Returns:
+            A df with specified columns removed.
+        '''    
+        list_column_names = []
+        for arg in args:
+            list_column_names.append(arg)
+        return self.df_name.drop(list_column_names, axis=1)
+
+    def drop_rows_from_columns(self, *args):    # arg is column_name
+        '''
+        This method takes in column_name(s) as a parameter and searches within those column(s) for null-values. If found, those rows are dropped.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            *args (str): Column header(s)
+        
+        Returns:
+            A df with null-values removed from specified columns.
+        '''   
+        list_column_names = []
+        for arg in args:
+            list_column_names.append(arg)
+        return self.df_name.dropna(subset=list_column_names)
+        
+    def drop_all_nulls(self):
+        '''
+        This method removes all rows within a df if a null-value is found in that row.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            *args (str): Column header(s)
+        
+        Returns:
+            A df with null-values removed from specified columns.
+        ''' 
+        return self.df_name.dropna(axis=0, how='any', thresh=0) # threshold can be increased if needed
+    
+    def impute_mean(self, column_name):
+        '''
+        This method imputes all null-values in specified column with mean value.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str/object): Column header
+        
+        Returns:
+            A df with null-values imputed with the mean value for the specified columns.
+        ''' 
+        return self.df_name[column_name].fillna(self.df_name[column_name].mean())
+                    
+    def impute_median(self, column_name):
+        '''
+        This method imputes all null-values in specified column with median value.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str/object): Column header
+        
+        Returns:
+            A df with null-values imputed with the median value for the specified columns.
+        ''' 
+        return self.df_name[column_name].fillna(self.df_name[column_name].median())
+            
+    def impute_mode(self, column_name):
+        '''
+        This method imputes all null-values in specified column with mode value.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str/object): Column header
+        
+        Returns:
+            A df with null-values imputed with the mode value for the specified columns.
+        ''' 
+        return self.df_name.fillna({column_name: self.df_name[column_name].mode()[0]})
