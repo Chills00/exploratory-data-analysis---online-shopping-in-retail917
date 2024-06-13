@@ -1,4 +1,5 @@
 from scipy.stats import normaltest
+from scipy.stats import chi2_contingency
 from statsmodels.graphics.gofplots import qqplot
 import IPython
 import matplotlib.pyplot as plt
@@ -47,6 +48,8 @@ class Plotter():
         Generates a CDF plot, which is a graphical representation of the cumulative probability distribution of a random variable.
     scatter()
         Plots a scatter plot, which is used to display the relationship between two (usually continuous) numerical variables.
+    chi_squared()
+        Calculates the chi^2 value to check to see if there is any trend in the frequency of NaNs in column_a, as a function of column_b
     '''
     def __init__(self, df_name):
         self.df_name = df_name
@@ -271,3 +274,23 @@ class Plotter():
             The scatter plot.
         '''
         sns.scatterplot(data=self.df_name, x=column_a, y=column_b)
+
+    def chi_squared(self, column_a, column_b):
+        '''
+        This method calculates the chi^2 value to check to see if there is any trend in the frequency of NaNs in column_a, as a function of column_b.
+        The Chi-squared test is a statistical hypothesis test that is used to determine whether there is a significant association between two categorical variables in a sample.
+        A p-value greater than 0.05 suggests that the NaNs are randomly distributed with respect to the value of column_b.
+  
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_a (str/object): Name of variable to be analysed
+            column_b (str/object): Name of variable to be analysed
+
+        Returns:
+            The chi^2 statistical analysis.
+        '''
+        self.df_name['missing_values'] = self.df_name[column_a].isnull()
+        contingency_table = pd.crosstab(self.df_name['missing_values'], self.df_name[column_b])
+        chi2, p, dof, expected = chi2_contingency(contingency_table)
+        print(f"Chi-square statistic = {chi2}")
+        print(f"p-value = {p}")
