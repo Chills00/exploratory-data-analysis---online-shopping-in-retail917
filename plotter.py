@@ -7,6 +7,7 @@ import matplotlib.style as style
 import missingno as msno
 import seaborn as sns
 import plotly.express as px
+import pandas as pd
 
 class Plotter():
     '''
