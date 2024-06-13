@@ -98,7 +98,12 @@ class DataFrameInfo():
             The number of null values for each column as a percentage of all values.
         '''
         all_values = len(self.df_name)
+        print(f'For any columns containing null values the percentage of null values for that column is:')
+        print()
         for column in list(self.df_name):
             sum_missing_values = self.df_name[column].isna().sum()
             percentage = round((100 * sum_missing_values / all_values), 2)
-            print(f'The percentage of null values for {column} is: {percentage} %')
+            if percentage > 0:
+                print(f'{column} is: {percentage} %')
+            else:
+                continue
