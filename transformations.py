@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 class DataTransform():
     '''
@@ -201,3 +202,9 @@ class DataFrameTransform():
             A df with null-values imputed with the mode value for the specified columns.
         ''' 
         return self.df_name.fillna({column_name: self.df_name[column_name].mode()[0]})
+    
+    def log_transformation(self, *args):
+        list_column_names = []
+        for arg in args:
+            list_column_names.append(arg)
+        return self.df_name.map(lambda i: np.log(i) if i > 0 else 0)

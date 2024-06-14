@@ -1,10 +1,10 @@
-from scipy.stats import normaltest
-from scipy.stats import chi2_contingency
+from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
 import IPython
 import matplotlib.pyplot as plt
 import matplotlib.style as style
 import missingno as msno
+import numpy as np
 import seaborn as sns
 import plotly.express as px
 import pandas as pd
@@ -51,6 +51,12 @@ class Plotter():
         Plots a scatter plot, which is used to display the relationship between two (usually continuous) numerical variables.
     chi_squared()
         Calculates the chi^2 value to check to see if there is any trend in the frequency of NaNs in column_a, as a function of column_b
+    log_transformation()
+        Transforms the data, correcting skewness using the Log transform method and generates histogram and Q-Q plot of the transformed data. 
+    boxcox()
+        Transforms the data, correcting skewness using the Box-Cox method and generates histogram and Q-Q plot of the transformed data. 
+    yeojohnson()
+        Transforms the data, correcting skewness using the Yeo-Johnson method and generates histogram and Q-Q plot of the transformed data. 
     '''
     def __init__(self, df_name):
         self.df_name = df_name
@@ -184,7 +190,7 @@ class Plotter():
             The k^2 statistical analysis.
         '''
         data = self.df_name[column_name]
-        stat, p = normaltest(data, nan_policy='omit')
+        stat, p = stats.normaltest(data, nan_policy='omit')
         print('Statistics = %.3f, p = %.3f' % (stat, p))
 
     def qq_plot(self, column_name):
@@ -292,6 +298,63 @@ class Plotter():
         '''
         self.df_name['missing_values'] = self.df_name[column_a].isnull()
         contingency_table = pd.crosstab(self.df_name['missing_values'], self.df_name[column_b])
-        chi2, p, dof, expected = chi2_contingency(contingency_table)
+        chi2, p, dof, expected = stats.chi2_contingency(contingency_table)
         print(f"Chi-square statistic = {chi2}")
         print(f"p-value = {p}")
+
+    def log_transformation(self, column_name):
+        '''
+        This method transforms the data using the Log transform method and generates histogram and Q-Q plot of the transformed data. 
+        The transformation involves replacing each value x with log(x) (except from 0).
+                
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str/object): Name of variable to be analysed
+
+        Returns:
+            The histogram and Q-Q plot.
+        '''
+        log = self.df_name[column_name].map(lambda i: np.log(i) if i > 0 else 0)
+        t = sns.histplot(log, label = 'Skewness: %.2f' % (log.skew()), kde=True)
+        t.legend()
+        qq_plot = qqplot(log, scale = 1 ,line = 'q', fit=True)
+        plt.show()
+    
+    def boxcox(self, column_name):
+        '''
+        This method transforms the data using the Box-Cox method and generates histogram and Q-Q plot of the transformed data. 
+        The data must be positive.
+                
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str/object): Name of variable to be analysed
+
+        Returns:
+            The histogram and Q-Q plot.
+        '''
+        boxcox = self.df_name[column_name]
+        boxcox= stats.boxcox(boxcox)
+        boxcox= pd.Series(boxcox[0])
+        t=sns.histplot(boxcox,label="Skewness: %.2f"%(boxcox.skew()), kde=True)
+        t.legend()
+        qq_plot = qqplot(boxcox, scale = 1 ,line = 'q', fit=True)
+        plt.show()
+    
+    def yeojohnson(self, column_name):
+        '''
+        This method transforms the data using the Yeo-Johnson method and generates histogram and Q-Q plot of the transformed data. 
+                        
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str/object): Name of variable to be analysed
+
+        Returns:
+            The histogram and Q-Q plot.
+        '''
+        yeojohnson = self.df_name[column_name]
+        yeojohnson = stats.yeojohnson(yeojohnson)
+        yeojohnson = pd.Series(yeojohnson[0])
+        t=sns.histplot(yeojohnson,label="Skewness: %.2f"%(yeojohnson.skew()), kde=True)
+        t.legend()
+        qq_plot = qqplot(yeojohnson, scale = 1 ,line = 'q', fit=True)
+        plt.show()
