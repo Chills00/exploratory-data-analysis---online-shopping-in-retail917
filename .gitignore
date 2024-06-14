@@ -1,5 +1,6 @@
 credentials.yaml
 customer_activity.csv 
+customer_activity_null_skew_transformed.csv
 test.ipynb
 test.py
 /__pycache__

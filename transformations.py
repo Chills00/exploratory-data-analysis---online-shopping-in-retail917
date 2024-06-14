@@ -115,6 +115,8 @@ class DataFrameTransform():
         Imputes null-values in specified column with median value.
     impute_mode()
         Imputes null-values in specified column with mode value.
+    log_transformation()
+        Transforms the data using the Log transform method. 
     '''
     def __init__(self, df_name):
         self.df_name = df_name
@@ -204,7 +206,17 @@ class DataFrameTransform():
         return self.df_name.fillna({column_name: self.df_name[column_name].mode()[0]})
     
     def log_transformation(self, *args):
-        list_column_names = []
+        '''
+        This method transforms the data using the Log transform method. 
+        The transformation involves replacing each value x with log(x) (except from 0).
+                
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str/object): Name of variable to be analysed
+
+        Returns:
+            The histogram and Q-Q plot.
+        '''
         for arg in args:
-            list_column_names.append(arg)
-        return self.df_name.map(lambda i: np.log(i) if i > 0 else 0)
+            self.df_name[arg] = self.df_name[arg].map(lambda i: np.log(i) if i > 0 else 0)
+        return self.df_name
