@@ -25,6 +25,8 @@ class DataTransform():
         Converts the specified column(s) to Int64 data type.
     to_int()
         Converts the specified column(s) to int64 data type.
+    to_total_seconds()
+        Converts the specified column(s) from timedelta to float64 data type.
     '''
     def __init__(self, df_name):
         self.df_name = df_name
@@ -84,6 +86,20 @@ class DataTransform():
         '''    
         for arg in args:
             self.df_name[arg] = self.df_name[arg].astype('int64')
+    
+    def to_total_seconds(self, *args):
+        '''
+        This method convert timedelta values in the specified column(s) to a float value representing total seconds.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            *args (str): Column header(s)
+        
+        Returns:
+            The specified column(s) as float64.
+        '''   
+        for arg in args:
+            self.df_name[arg] = self.df_name[arg].dt.total_seconds()
 
 class DataFrameTransform():
     '''

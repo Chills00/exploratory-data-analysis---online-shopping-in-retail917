@@ -219,7 +219,7 @@ class Plotter():
         Returns:
             The histogram.
         '''
-        self.df_name[column_name].hist(bins=50)
+        self.df_name[column_name].hist(bins=25, legend=True)
 
     def density_plot(self, column_name):
         '''
@@ -246,8 +246,11 @@ class Plotter():
         Returns:
             The box plot.
         '''
-        plot = px.box(self.df_name, y = column_name, width = 600, height = 500)
-        plot.show()
+        plt.figure(figsize=(10, 5))
+        sns.boxplot(y = self.df_name[column_name], color='lightgreen', showfliers=True)
+        sns.swarmplot(y = self.df_name[column_name], color='black', size=5)
+        plt.title(f'Box plot with scatter points of {column_name}')
+        plt.show()
     
     def cumulative_distribution_function(self, column_name):
         '''
