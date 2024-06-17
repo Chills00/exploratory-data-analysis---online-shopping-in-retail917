@@ -246,12 +246,8 @@ class Plotter():
         Returns:
             The box plot.
         '''
-        plt.figure(figsize=(10, 5))
-        sns.boxplot(y = self.df_name[column_name], color='lightgreen', showfliers=True)
-        sns.swarmplot(y = self.df_name[column_name], color='black', size=5)
-        plt.title(f'Box plot with scatter points of {column_name}')
-        plt.show()
-    
+        sns.boxplot(y = self.df_name[column_name], color='royalblue', showfliers=True)
+     
     def cumulative_distribution_function(self, column_name):
         '''
         This method generates a cumulative distribution function (CDF) plot. 
@@ -361,3 +357,16 @@ class Plotter():
         t.legend()
         qq_plot = qqplot(yeojohnson, scale = 1 ,line = 'q', fit=True)
         plt.show()
+
+    def pairplot(self, list_numeric_variables):
+        sns.pairplot(self.df_name[list_numeric_variables])
+    
+    def count_plot(self, non_numeric_variables):
+        def countplot(x, **kwargs):
+            sns.countplot(x=x)
+            x = plt.xticks(rotation=90)
+        
+        f = pd.melt(self.df_name, value_vars=non_numeric_variables)
+        g = sns.FacetGrid(f, col='variable',  col_wrap=3, sharex=False, sharey=False)
+        g = g.map(countplot, 'value')
+

@@ -123,6 +123,8 @@ class DataFrameTransform():
         Drops specified columns from df.
     drop_rows_from_columns()
         Drops rows by searching specified columns for null-values. 
+    drop_negative_rows()
+        Drops rows by searching specified columns for negative-values. 
     drop_all_nulls()
         Drops all rows if null-value is in df.
     impute_mean()
@@ -168,6 +170,21 @@ class DataFrameTransform():
         for arg in args:
             list_column_names.append(arg)
         return self.df_name.dropna(subset=list_column_names)
+    
+    def drop_negative_rows(self, *args):
+        '''
+        This method takes in column_name(s) as a parameter and searches within those column(s) for negative-values. If found, those rows are dropped.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            *args (str): Column header(s)
+        
+        Returns:
+            A df with negative-values removed from specified columns.
+        '''   
+        for arg in args:
+            self.df_name.drop(self.df_name[self.df_name[arg] < 0].index, inplace=True)
+        return self.df_name
         
     def drop_all_nulls(self):
         '''
@@ -236,3 +253,7 @@ class DataFrameTransform():
         for arg in args:
             self.df_name[arg] = self.df_name[arg].map(lambda i: np.log(i) if i > 0 else 0)
         return self.df_name
+    
+    def replace_categories(self, column_name, list_category_to_replace, replacement_category):
+        self.df_name[column_name] = self.df_name[column_name].replace(list_category_to_replace, replacement_category)
+        return self.df_name[column_name].value_counts()
