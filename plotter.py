@@ -57,6 +57,10 @@ class Plotter():
         Transforms the data, correcting skewness using the Box-Cox method and generates histogram and Q-Q plot of the transformed data. 
     yeojohnson()
         Transforms the data, correcting skewness using the Yeo-Johnson method and generates histogram and Q-Q plot of the transformed data. 
+    pair_plot()
+        Generates a scatter plot for each pair of variables.
+    count_plot()
+        Generates a bar chart for each pair of variables.
     '''
     def __init__(self, df_name):
         self.df_name = df_name
@@ -359,9 +363,31 @@ class Plotter():
         plt.show()
 
     def pairplot(self, list_numeric_variables):
+        '''
+        This method generates scatter plot for each pair of variables in list_numeric_variables. 
+        This requires numeric data.
+                        
+        Parameters:
+            df_name (Pandas df): Pandas df
+            list_numeric_variables (list of str/object): Names of variables to be analysed
+
+        Returns:
+            The pair plot.
+        '''
         sns.pairplot(self.df_name[list_numeric_variables])
     
     def count_plot(self, non_numeric_variables):
+        '''
+        This method generates bar chart for each pair of variables in list_numeric_variables. 
+        This requires numeric data.
+                        
+        Parameters:
+            df_name (Pandas df): Pandas df
+            list_numeric_variables (list of str/object): Names of variables to be analysed
+
+        Returns:
+            The count plot.
+        '''
         def countplot(x, **kwargs):
             sns.countplot(x=x)
             x = plt.xticks(rotation=90)

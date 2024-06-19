@@ -135,6 +135,8 @@ class DataFrameTransform():
         Imputes null-values in specified column with mode value.
     log_transformation()
         Transforms the data using the Log transform method. 
+    replacement_categories()
+        Replaces specified categories within a column with a new category and returns the value counts for the specified column once replacement has taken place.
     '''
     def __init__(self, df_name):
         self.df_name = df_name
@@ -255,5 +257,18 @@ class DataFrameTransform():
         return self.df_name
     
     def replace_categories(self, column_name, list_category_to_replace, replacement_category):
+        '''
+        This method replaces categories within a column with one category.
+        Useful to replace low-value count categories with 'Other'.
+
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str): Column header
+            list_category_to_replace (list of str/object): list of categories to replace
+            replacement_category (str/object): name of replacement category
+        
+        Returns:
+            The value counts for the specified column once replacement has taken place.
+        ''' 
         self.df_name[column_name] = self.df_name[column_name].replace(list_category_to_replace, replacement_category)
         return self.df_name[column_name].value_counts()
