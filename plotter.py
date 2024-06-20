@@ -134,6 +134,7 @@ class Plotter():
         print('Probability:')
         print(probs)
         dpd = sns.barplot(y = probs.values, x = probs.index)
+        plt.xticks(rotation=45, ha='right')
         plt.xlabel('Values')
         plt.ylabel('Probability')
         plt.title('Discrete Probability Distribution')
