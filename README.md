@@ -1,7 +1,14 @@
 # Exploratory Data Analysis: Online shopping in retail
 ## Description
 This Exploratory Data Analysis (EDA) project was part of AiCore's training for their Data Analysis course. The purpose is to provide real-world experience of data analysis by exploring a dataset of online shopping website activity. 
+![Alt text](https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/monthly_revenue.png)
+## Table of Contents
+1. [Description](#description)
+1. [Introduction](#introduction)
+1. [What I learnt from the project](#what-i-learnt-from-the-project)
+1. [File structure](#file-structure)
 
+## Introduction
 The project will showcase the power of EDA in uncovering valuable insights from large datasets and how these insights can be leveraged to drive business success. 
 
 The data contains information about the website activity of users over a one year period. Each sample represents the user interacting with the website during a shopping session. 
@@ -14,7 +21,7 @@ The project is split across 4 key milestones:
 1. Exploratory Data Analysis (EDA).
 1. Analysis and Visualisation.
 
-### What did I learn:
+## What I learnt from the project:
 Below are examples of how this project has supported my learning:
 1. Milestone 1:
     - How to set up a dev environment. Although I set up a directory to store my data and files, initially I did not set up a conda environment. 
@@ -37,11 +44,23 @@ Below are examples of how this project has supported my learning:
     - Using boxplots, histograms and scatter plots can be useful visual methods to identify outliers. However, care must be used when doing-so because e.g. high zero-value count data could falsely create outliers. 
     - Outliers in non-numeric data can be harder to spot. But by scrutinising the data, the chance of outliers can be minimised. E.g. grouping low count values into a "Other" category. 
     - Overly correlated variables can cause issues when modelling the data. Overly correlated variables can be identified using a heatmap plot. But should be analysed using statistical methods, e.g using a linear regression model. 
+1. Milestone 4:
+    - Useful at this stage to save a copy of the cleaned dataset.
+    - Gained experience using Pandas, matplotlib, plotly and seaborn to build visualisations. 
+    - Using a new variable to create a copy of the df allows it to be manipulated without affecting the original df. This is useful if the new df will be referenced several times. E.g. df of data where a sale was made.
+    - Creating functions can be useful to analyse numerical data. E.g. comparing time spent on different tasks.
+    - Often plots can be adapted to change titles, legends, sizes, colours etc.
+    - Analysis is as much about understanding what questions can be answered (thinking about the limitations of the data) as it is having the skills to perform the analysis.
+    - Groupby function provides a powerful method for grouping and analysing data.
+    - It is important to consider how the data was cleaned and transformed before conclusions can be made on analysis. E.g. using log transform can lead to negative values. Care must be made when determining max and min values.
+    - It is useful to analyse total counts as well as probability/percentages from normalised data.
+## Installation
+git clone https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917.git
 
-
-## Table of Contents
+Note: Database access limited to those with login credentials.
+## File structure
 
 ## Usage
 
 ## Licence
-
+None
