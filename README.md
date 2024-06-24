@@ -1,6 +1,7 @@
 # Exploratory Data Analysis: Online shopping in retail
 ## Description
-This Exploratory Data Analysis (EDA) project was part of AiCore's training for their Data Analysis course. The purpose is to provide real-world experience of data analysis by exploring a dataset of online shopping website activity. 
+This Exploratory Data Analysis (EDA) project was part of AiCore's training for their Data Analysis course. The purpose is to provide real-world experience of data analysis by exploring a dataset of online shopping website activity. This project will provide me with experience using python to extract, load and transform large datasets before performing data analysis to generate meaningful visuals. For example:
+
 ![Alt text](https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/monthly_revenue.png)
 ## Table of Contents
 1. [Description](#description)
