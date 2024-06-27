@@ -1,5 +1,6 @@
 import yaml
 from sqlalchemy import create_engine
+from sqlalchemy.engine.url import URL
 import pandas as pd
 import psycopg2
 
@@ -11,6 +12,9 @@ def load_credentials(file_path):
 
     Parameters:
         file_path (str): File path for local .yaml file containing login credentials for AWS RDS. 
+
+    Returns:
+        credentials (dict): Dictionary of login credentials
     '''
     with open(file_path, 'r') as file:
         credentials = yaml.safe_load(file)
@@ -20,33 +24,25 @@ def load_credentials(file_path):
 class RDSDatabaseConnector:
     '''
     This class is used to connect to a remote AWS database and retrieve tabular data.
-
-    ------------------
-    Parameters:
-    credentials: dict
-        Dictionary of credentials required to connect to remote RDS.
-
-    ------------------
-    Attributes:
-    credentials: dict
-        Dictionary of credentials required to connect to remote RDS.
-
+    
     ------------------
     Methods:
-    save_data(df)
+    save_data()
         Saves df created as .csv file to local directory.
-    connect_db(DATABASE_TYPE, DBAPI, RDS_USER, RDS_PASSWORD, RDS_HOST, RDS_PORT, RDS_DATABASE)
-        Connects to remote RDS and creates Pandas df from specified table name.
+    load_df()
+        Creates a df containing all data from specified table.
+    connect_db()
+        Connects to remote RDS.
     '''
-    def __init__(self, credentials):
-        self.credentials = credentials
-    
     def save_data(self, df):
         '''
         This method saves the Pandas df to .csv file in specified local directory.
 
         Parameters:
             df: Pandas DataFrame. 
+        
+        Returns:
+            .csv file containing data.
         '''
         try:
             df.to_csv(f'{directory}{table_name}.csv', index=False)
@@ -54,28 +50,38 @@ class RDSDatabaseConnector:
         except:
             print('Saving failed')
     
-    def connect_db(self, DATABASE_TYPE, DBAPI, RDS_USER, RDS_PASSWORD, RDS_HOST, RDS_PORT, RDS_DATABASE):
+    def load_df(self, conn):
         '''
-        This method connects to the remote RDS and creates a Pandas df of all data from specefied table name. 
+        This method creates a Pandas df from the data in the selected table.
+
+        Parameters:
+            conn: Sqlalchemy database conncetion.
+
+        Returns:
+            Calls save_data() function with df. 
+        '''
+        df = pd.read_sql(f'SELECT * FROM {table_name}', conn)
+        conn.close()
+        return self.save_data(df)
+    
+    def connect_db(self, credentials_dict):
+        '''
+        This method connects to the remote RDS. 
 
         Parameters: 
-            DATABASE_TYPE (str): dialect
-            DBAPI (str): driver
-            RDS_USER (str): username
-            RDS_PASSWORD (str): password
-            RDS_HOST (str): host
-            RDS_PORT (str): port
-            RDS_DATABASE (str): database name
+            credentials_dict (dict): Dictionary of login credentials
+
+        Returns:
+            Sqlalchemy connection to remote database.
         '''
+        url = URL.create('postgresql+psycopg2', **credentials_dict)
         try:
-            engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{RDS_USER}:{RDS_PASSWORD}@{RDS_HOST}:{RDS_PORT}/{RDS_DATABASE}")
+            engine = create_engine(url, echo=True)
             conn = engine.connect()
             print('Connection successful')
         except:
             print('Connection failed')
-        df = pd.read_sql(f'SELECT * FROM {table_name}', conn)
-        conn.close()
-        return self.save_data(df)
+        return self.load_df(conn)
         
 def load_db(credentials_file_path):
     '''
@@ -83,18 +89,16 @@ def load_db(credentials_file_path):
 
     Parameters:
         credentials_file_path (str): Local file path for .yaml file containing login credentials.
+
+    Returns:
+        Calls connect_db() function with credentials dictionary. 
     '''
     credentials = load_credentials(credentials_file_path)
-    connection = RDSDatabaseConnector(credentials)
-    connection.connect_db(**credentials)    # Use of the unpacking operator (**) to unpack dictionary into keyword arguments of a function. 
+    connection = RDSDatabaseConnector()
+    connection.connect_db(credentials) 
 
 if __name__ == '__main__':
     credentials_file_path = 'C:/Users/Chris/Documents/AiCoreEDA_Project/credentials.yaml' # Use of forward slash instead of backslash
     table_name = 'customer_activity'    # Name of table in db, also used to create file_name.
-    directory = 'C:/Users/Chris/Documents/AiCoreEDA_Project/EDA-Project/'  # To save df
+    directory = 'C:/Users/Chris/Documents/AiCoreEDA_Project/'  # To save df C:\Users\Chris\Documents\AiCoreEDA_Project\customer_activity_transformed.csv
     load_db(credentials_file_path)
-
-
-
-
-
