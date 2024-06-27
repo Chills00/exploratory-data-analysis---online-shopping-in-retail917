@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import PowerTransformer
 
 class DataTransform():
     '''
@@ -135,6 +136,8 @@ class DataFrameTransform():
         Imputes null-values in specified column with mode value.
     log_transformation()
         Transforms the data using the Log transform method. 
+    yeo_or_boxcox_transformation()
+        Transforms or inverse_transforms the data using either the Yeo-Johnson or Box-Cox method.
     replacement_categories()
         Replaces specified categories within a column with a new category and returns the value counts for the specified column once replacement has taken place.
     '''
@@ -240,22 +243,52 @@ class DataFrameTransform():
         ''' 
         return self.df_name.fillna({column_name: self.df_name[column_name].mode()[0]})
     
-    def log_transformation(self, *args):
+    def log_transformation(self, list_of_columns):
         '''
         This method transforms the data using the Log transform method. 
         The transformation involves replacing each value x with log(x) (except from 0).
                 
         Parameters:
             df_name (Pandas df): Pandas df
-            column_name (str/object): Name of variable to be analysed
+            list_of_columns (list): List of column name(s) (str) to be transformed
 
         Returns:
-            The histogram and Q-Q plot.
+            The transformed dataframe.
         '''
-        for arg in args:
-            self.df_name[arg] = self.df_name[arg].map(lambda i: np.log(i) if i > 0 else 0)
+        for column in list_of_columns:
+            print(f"Skewness of {column} before transformation: {self.df_name[column].skew()}")
+            self.df_name[column] = self.df_name[column].map(lambda i: np.log(i) if i > 0 else 0)
+            print(f"Skewness of {column} after log transformation: {self.df_name[column].skew()}")
         return self.df_name
     
+    def yeo_or_boxcox_transformation(self, list_of_columns, method='yeo-johnson', inverse_transform=False):
+        '''
+        This method transforms the data using the Yeo-Johnson or Box-Cox method. 
+                        
+        Parameters:
+            df_name (Pandas df): Pandas df
+            list_of_columns (list): List of column name(s) (str) to be transformed
+            method (str): Transformation method ('yeo-johnson' or 'box-cox')
+            inverse_transform (bool): Whether to apply the inverse transformation
+
+        Returns:
+            The ddf with the transformed dataframe.
+        '''
+        power_transformer = PowerTransformer(method=method)
+        for column in list_of_columns:
+            print(f"Skewness of {column} before transformation: {self.df_name[column].skew()}")
+            self.df_name[[column]] = power_transformer.fit_transform(self.df_name[[column]])
+            print(f"Skewness of {column} after {method} transformation: {self.df_name[column].skew()}")
+
+        if inverse_transform:
+            for column in list_of_columns:
+                print(f"Skewness of {column} before transformation: {self.df_name[column].skew()}")
+                # Reverse transform the transformed DataFrame
+                self.df_name[[column]] = power_transformer.inverse_transform(self.df_name[[column]])
+                print(f"Skewness of {column} after {method} inverse transformation: {self.df_name[column].skew()}")
+                        
+        return self.df_name
+            
     def replace_categories(self, column_name, list_category_to_replace, replacement_category):
         '''
         This method replaces categories within a column with one category.

@@ -57,6 +57,8 @@ class Plotter():
         Transforms the data, correcting skewness using the Box-Cox method and generates histogram and Q-Q plot of the transformed data. 
     yeojohnson()
         Transforms the data, correcting skewness using the Yeo-Johnson method and generates histogram and Q-Q plot of the transformed data. 
+    skew_subplot()
+        Generates a figure with a histogram, Q-Q plot and skewness value for the data series passed to it, and for the same data series transformed using the log transform, Box-Cox and Yeo-Johnson methods.
     pair_plot()
         Generates a scatter plot for each pair of variables.
     count_plot()
@@ -361,6 +363,65 @@ class Plotter():
         t=sns.histplot(yeojohnson,label="Skewness: %.2f"%(yeojohnson.skew()), kde=True)
         t.legend()
         qq_plot = qqplot(yeojohnson, scale = 1 ,line = 'q', fit=True)
+        plt.show()
+    
+    def skew_subplots(self, column_name):
+        '''
+        This method is used to compare the transformation methods effect on skew. 
+        It generates a figure with a histogram, Q-Q plot and skewness value for the data series passed to it, and for the same data series transformed using the log transform, Box-Cox and Yeo-Johnson methods.
+                        
+        Parameters:
+            df_name (Pandas df): Pandas df
+            column_name (str/object): Name of variable to be analysed
+
+        Returns:
+            The a figure with a histogram, Q-Q plot and skewness value for the data series passed to it, and for the same data series transformed using the log transform, Box-Cox and Yeo-Johnson methods.
+        '''
+        #Create a figure with four subplots
+        sns.set()
+        fig, axs = plt.subplots(nrows=2, ncols=4, figsize=(16, 8))
+        fig.subplots_adjust(hspace=0.4, wspace=0.3)
+        fig.suptitle(f'Transformation effect on skewness value for {column_name}')
+
+        # Original data
+        sns.histplot(ax=axs[0,0], data=self.df_name[column_name], label = 'Skewness: %.2f' % (self.df_name[column_name].skew()), kde=True)
+        axs[0,0].set_title('Original Data Histogram')
+        axs[0,0].legend()
+        qqplot(ax=axs[1,0], data=self.df_name[column_name], scale = 1 ,line = 'q', fit=True)
+        axs[1,0].set_title('Original Data Q-Q Plot')
+
+        # log transform data
+        log = self.df_name[column_name].map(lambda i: np.log(i) if i > 0 else 0)
+        sns.histplot(ax=axs[0, 1], data=log, label = 'Skewness: %.2f' % (log.skew()), kde=True)
+        axs[0,1].set_title('Log Transformed Data Histogram')
+        axs[0,1].legend()
+        qqplot(ax=axs[1,1], data=log, scale = 1 ,line = 'q', fit=True)
+        axs[1,1].set_title('Log Transformed Data Q-Q Plot')
+
+        # box-cox data
+        try:
+            boxcox = self.df_name[column_name]
+            boxcox= stats.boxcox(boxcox)
+            boxcox= pd.Series(boxcox[0])
+            sns.histplot(ax=axs[0, 2], data=boxcox, label = 'Skewness: %.2f' % (boxcox.skew()), kde=True)
+            axs[0,2].set_title('Box-Cox Data Histogram')
+            axs[0,2].legend()
+            qqplot(ax=axs[1,2], data=boxcox, scale = 1 ,line = 'q', fit=True)
+            axs[1,2].set_title('Box-Cox Data Q-Q Plot')
+        except(ValueError):
+            print('Box-Cox ValueError: Data must be positive.')
+
+        # yeo-johnson data
+        yeojohnson = self.df_name[column_name]
+        yeojohnson = stats.yeojohnson(yeojohnson)
+        yeojohnson = pd.Series(yeojohnson[0])
+        sns.histplot(ax=axs[0, 3], data=yeojohnson, label = 'Skewness: %.2f' % (yeojohnson.skew()), kde=True)
+        axs[0,3].set_title('Yeo-Johnson Data Histogram')
+        axs[0,3].legend()
+        qqplot(ax=axs[1,3], data=yeojohnson, scale = 1 ,line = 'q', fit=True)
+        axs[1,3].set_title('Yeo-Johnson Data Q-Q Plot')
+        
+        # Display the plot
         plt.show()
 
     def pairplot(self, list_numeric_variables):
