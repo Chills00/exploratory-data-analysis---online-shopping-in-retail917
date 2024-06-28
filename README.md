@@ -1,4 +1,5 @@
 # Exploratory Data Analysis: Online shopping in retail
+![Analytics](https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/analytics_gif.gif)
 ## Description
 This Exploratory Data Analysis (EDA) project was part of AiCore's training for their Data Analysis course. The purpose is to provide real-world experience of data analysis by exploring a dataset of online shopping website activity. This project will provide me with experience using python to extract, load and transform large datasets before performing data analysis to generate meaningful visuals. For example:
 
@@ -25,9 +26,20 @@ The project is split across 4 key milestones:
 1. Analysis and Visualisation.
 
 ## Installation
-Use environments.yaml file to clone conda env.
+1. Install conda environment on your local machine:
 
-''' git clone https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917.git '''
+    Download environment.yaml file to local directory.
+
+    '''
+    conda env create -f environment.yaml 
+    '''
+
+1. Clone repo:
+
+    '''
+    git clone https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917.git
+    '''
+
 
 Note: Database access limited to those with login credentials.
 ## File structure
