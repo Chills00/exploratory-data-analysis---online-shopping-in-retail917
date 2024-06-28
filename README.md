@@ -40,15 +40,16 @@ The project is split across 4 key milestones:
 ![section_break](https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/rainbow.png)
 
 ## Installation
-1. Download environment.yaml file to local directory and in CLI install conda environment on your local machine:
-    ```
-    conda env create -f environment.yaml 
-    ```  
-
 1. Clone repo:
     ```
     git clone https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917.git
     ```  
+
+1. Using a CLI install conda environment on your local machine:
+    ```
+    conda env create -f environment.yaml 
+    ```  
+
 
 Note: Database access limited to those with login credentials.
 
