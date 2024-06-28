@@ -40,39 +40,35 @@ The project is split across 4 key milestones:
 ![section_break](https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/rainbow.png)
 
 ## Installation
-1. Install conda environment on your local machine:
-
-    Download environment.yaml file to local directory.
-
-    '''
+1. Download environment.yaml file to local directory and in CLI install conda environment on your local machine:
+    ```
     conda env create -f environment.yaml 
-    '''
+    ```  
 
 1. Clone repo:
-
-    '''
+    ```
     git clone https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917.git
-    '''
-
+    ```  
 
 Note: Database access limited to those with login credentials.
 
 ![section_break](https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/rainbow.png)
 
 ## File structure
-.
-├── db_utils.py
-├── df.info.py
-├── transformations.py
-├── plotter.py
-├── EDA_notebook.ipynb
-├── Analysis_Notebook.ipynb
-└── README.md
+
+AiCoreEDA_Project  
+├── db_utils.py  
+├── df.info.py  
+├── transformations.py  
+├── plotter.py  
+├── EDA_notebook.ipynb  
+├── Analysis_Notebook.ipynb  
+└── README.md  
 
 ![section_break](https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/rainbow.png)
 
 ## Usage
-Python files:
+### Python files:
 - db_utils.py:
     - Uses Sqlalchemy to connect to remote database and creates .csv file of downloaded data.
 - db_info.py:
@@ -87,7 +83,7 @@ Python files:
     - Also contains statistical tests including the chi squared test, and k squared test.
     - Additionally, there are methods to generate visuals to assess normalisation of data to correct for skew. 
 
-Jupyter Notebooks:
+### Jupyter Notebooks:
 - EDA_notebook.ipynb:
     - Contains the workflow of the initial EDA process including data extraction, loading and cleaning/transformations. 
     - Key steps included:
