@@ -1,5 +1,6 @@
 # Exploratory Data Analysis: Online shopping in retail
-replace![Analytics](https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/analytics_gif.gif) with <img src="https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/analytics_gif.gif" width="50" height="50">
+<img src="https://github.com/Chills00/exploratory-data-analysis---online-shopping-in-retail917/blob/main/analytics_gif.gif" width="300" height="300" />
+
 ## Description
 This Exploratory Data Analysis (EDA) project was part of AiCore's training for their Data Analysis course. The purpose is to provide real-world experience of data analysis by exploring a dataset of online shopping website activity. This project will provide me with experience using python to extract, load and transform large datasets before performing data analysis to generate meaningful visuals. For example:
 
